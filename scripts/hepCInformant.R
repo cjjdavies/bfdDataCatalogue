@@ -230,7 +230,7 @@ extract_report_info <- function(report_file, report_path = "www") {
     html_text2() %>%
     paste(. , collapse = ", ")
 
-  Title = glue("<a title='{Title}' href='https://github.com/cjjdavies/bfdDataCatalogue/{report_file}'>{Title}</a>")
+  Title = glue("<a title='{Title}' href='https://github.com/cjjdavies/bfdDataCatalogue/docs/{report_file}'>{Title}</a>")
   report_info <- data.frame(Title = Title, Description = Description, Source = Source, Updates = Updates, Stored = Stored, Columns = Columns)
   return(report_info)
 

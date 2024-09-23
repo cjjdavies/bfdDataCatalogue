@@ -1,0 +1,51 @@
+---
+title: "NIHR HDRC Data Catalogue"
+author: "HDRC Data Team"
+format: 
+  html:
+    page-layout: full
+editor: source
+---
+
+```{r load-packages, echo=FALSE}
+pacman::p_load(reactable)
+
+```
+
+
+```{r render-table}
+#| echo: false
+
+hepCTableData <- readRDS("data/hepCTableData.Rds")
+
+html <- function(x, inline = FALSE) {
+  container <- if (inline) htmltools::span else htmltools::div
+  container(dangerouslySetInnerHTML = list("__html" = x))
+}
+
+reactable(hepCTableData[, c("Title","Description", "Source")], style = list(fontFamily = "Lato, sans-serif"),
+  searchable = TRUE,
+  filterable = TRUE,
+  pagination = FALSE,
+  compact = TRUE,
+  fullWidth = FALSE,
+  defaultExpanded = FALSE,
+  defaultColDef = colDef(vAlign = 'top',
+                         sortable = FALSE,
+                         width  = 400),
+  columns = list(
+    Title = colDef(html = TRUE),
+    Description = colDef(html = TRUE),
+    Source = colDef(html = TRUE, show = FALSE, searchable = TRUE),
+    Columns = colDef(show = FALSE, searchable = TRUE)
+  ),
+  
+  details = function(index) {
+      htmltools::tagList(
+        html(hepCTableData$Columns[index]),
+        html(hepCTableData$Source[index])
+      )
+  }
+)
+
+```

@@ -214,8 +214,6 @@ hepCInformant <- hepCInformant %>%
 hepCInformant <- get_informant_report(hepCInformant,
                      title = "Hepatitis C Health Process Measures Data")
 
-export_report(hepCInformant,
-              filename = "www/hepCInformantReport.html")
 
 extract_report_info <- function(report_file, report_path = "www") {
   report_file <- paste0(report_path, "/", report_file)
@@ -232,13 +230,11 @@ extract_report_info <- function(report_file, report_path = "www") {
     html_text2() %>%
     paste(. , collapse = ", ")
 
-  Title = glue("<a title='{Title}' href='https://github.com/cjjdavies/bfdDataCatalogue/'>{Title}</a>")
+  Title = glue("<a title='{Title}' href='https://github.com/cjjdavies/bfdDataCatalogue/{report_file}'>{Title}</a>")
   report_info <- data.frame(Title = Title, Description = Description, Source = Source, Updates = Updates, Stored = Stored, Columns = Columns)
   return(report_info)
 
 }
-
-extract_report_info("hepCInformantReport.html", report_path = "www")
 
 get_table_metadata_fields <- function(field, char_vector) {
   mytext <- char_vector[grepl(field, char_vector)]
@@ -247,10 +243,12 @@ get_table_metadata_fields <- function(field, char_vector) {
   return(mytext)
 }
 
+extract_report_info("hepCInformantReport.html", report_path = "www")
+
 table_data <- purrr::map_df(dir("www"), extract_report_info)
 
-saveRDS(table_data, "data_dictionary_table_data.Rds")
+saveRDS(table_data, "data/hepCTableData.Rds")
 
-table_data <- readRDS("data_dictionary_table_data.Rds")
+hepCTableData <- readRDS("data/hepCTableData.Rds")
 library(DT)
-datatable(table_data, escape = FALSE, filter = 'top', rownames = FALSE)
+datatable(hepCTableData, escape = FALSE, filter = 'top', rownames = FALSE)

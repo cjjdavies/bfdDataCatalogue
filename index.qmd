@@ -1,9 +1,14 @@
 ---
-title: "NIHR HDRC Data Catalogue"
+title: |
+  ![](images/NIHR_Bradford_HDRC_RGB_colour.png){width=5in}
+subtitle:  "Bradford HDRC Data Catalogue"
 author: "HDRC Data Team"
 format: 
   html:
     page-layout: full
+    mainfont: "Lato"
+    fontcolor: "#193E72"
+css: styles.css
 editor: source
 ---
 
@@ -16,14 +21,14 @@ pacman::p_load(reactable)
 ```{r render-table}
 #| echo: false
 
-hepCTableData <- readRDS("data/hepCTableData.Rds")
+table_data <- readRDS("data/table_data.Rds")
 
 html <- function(x, inline = FALSE) {
   container <- if (inline) htmltools::span else htmltools::div
   container(dangerouslySetInnerHTML = list("__html" = x))
 }
 
-reactable(hepCTableData[, c("Title","Description", "Source")], style = list(fontFamily = "Lato, sans-serif"),
+reactable(table_data[, c("Title","Description", "Source")], style = list(fontFamily = "Lato, sans-serif"),
   searchable = TRUE,
   filterable = TRUE,
   pagination = FALSE,
@@ -42,8 +47,8 @@ reactable(hepCTableData[, c("Title","Description", "Source")], style = list(font
   
   details = function(index) {
       htmltools::tagList(
-        html(hepCTableData$Columns[index]),
-        html(hepCTableData$Source[index])
+        html(table_data$Columns[index]),
+        html(table_data$Source[index])
       )
   }
 )
